@@ -20,6 +20,7 @@
     "request": "~2.33.0",
     "express": "~3.4.8",
     "underscore": "~1.6.0",
-    "phantom": "~0.5.4"
+    "phantom": "~0.5.4",
+    "cheerio": "~0.13.1"
   }
 }

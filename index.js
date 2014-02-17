@@ -1,18 +1,8 @@
-var phantom = require('phantom');
+var loader = require('./app/loader').create();
 
-phantom.create(function (p) {
+loader.on('loaded', function (response) {
 
-	return p.createPage(function (page) {
-
-		return page.open('http://google.com', function (status) {
-
-			console.log('opened google :: ', status);
-			return page.evaluate(
-				function () { return document.title; },
-				function (result) {
-					console.log('Page title is ' + result);
-					return p.exit();
-				});
-		});
-	});
+	console.log(response.html());
 });
+
+loader.load('http://thepiratebay.se/search/nausicaa/');
