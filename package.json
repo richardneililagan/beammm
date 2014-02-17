@@ -1,0 +1,24 @@
+{
+  "name": "beammm",
+  "version": "0.0.0",
+  "description": "API middleman for sites that don't provide APIs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/richardneililagan/beammm.git"
+  },
+  "author": "Richard Neil Ilagan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/richardneililagan/beammm/issues"
+  },
+  "homepage": "https://github.com/richardneililagan/beammm",
+  "dependencies": {
+    "request": "~2.33.0",
+    "express": "~3.4.8",
+    "underscore": "~1.6.0"
+  }
+}
