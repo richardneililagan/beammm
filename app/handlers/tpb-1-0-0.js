@@ -1,25 +1,26 @@
 
 var _ = require('underscore'),
-	BaseHandler = require('./basehandler').BaseHandler
+	BaseController = require('./basecontroller').BaseController
 	;
 
-var Handler = function () {
+var Controller = function () {
 
 	this.methods = {
 		get : {
-			user : function (req, res, next) {
+			search : this.handler(function (req, res, next) {
 
-				res.send('hello world!');
+
 				next();
-			}
+
+			}, ['searchstring'])
 		}
 	};
 };
 
-require('util').inherits(Handler, BaseHandler);
+require('util').inherits(Controller, BaseController);
 
 module.exports = {
 	create : function () {
-		return new Handler();
+		return new Controller();
 	}
 };

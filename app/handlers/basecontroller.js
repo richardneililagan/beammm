@@ -1,14 +1,15 @@
 
 var util = require('util'),
-	_ = require('underscore')
+	_ = require('underscore'),
+	Loader = require('../loader')
 	;
 
-var BaseHandler = function () {};
+var BaseController = function () {};
 
-util.inherits(BaseHandler, require('events').EventEmitter);
+util.inherits(BaseController, require('events').EventEmitter);
 
 // ### public
-_.extend(BaseHandler.prototype, {
+_.extend(BaseController.prototype, {
 
 	methods : {
 		get : {},
@@ -43,9 +44,26 @@ _.extend(BaseHandler.prototype, {
 	// returns a consumable contract of how this handler can be used
 	contract : function () {
 		return this.methods;
+	},
+
+	// convenience function to return an instance of the page loader
+	createLoader : function () {
+		return Loader.create();
+	},
+
+	// creates a function that has properties compatible
+	// for constructing dynamic routes
+	handler : function (fn, params) {
+
+		var ret = fn;
+
+		// TODO make sure params is either array or string
+		ret.params = _.isArray(params) ? params : [params];
+		return ret;
 	}
+
 });
 
 module.exports = {
-	BaseHandler : BaseHandler
+	BaseController : BaseController
 };

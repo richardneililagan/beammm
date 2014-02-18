@@ -26,7 +26,7 @@ module.exports = (function (tasks) {
 			// @module jshint
 			jshint : {
 				options : {
-					// todo
+					'-W030' : true
 				},
 				all : ['app/**/*.js']
 			},

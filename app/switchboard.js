@@ -1,5 +1,5 @@
 var _ = require('underscore'),
-	BaseHandler = require('./handlers/basehandler').BaseHandler
+	BaseController = require('./handlers/basecontroller').BaseController
 	;
 
 var parsefilename = function (alias, version) {
@@ -16,7 +16,7 @@ module.exports = {
 
 		var filename = parsefilename(opts.alias, opts.version),
 			handler = require(filename).create(),
-			contract = handler instanceof BaseHandler && handler.contract()
+			contract = handler instanceof BaseController && handler.contract()
 			;
 
 		console.log('contract found for [', filename, ']');
@@ -34,18 +34,26 @@ module.exports = {
 			// based on this handler's contract
 			_.each(map, function (fn, name) {
 
-				var path = [opts.root, name].join('/');
 				if (!_.isFunction(fn)) {
 					return;
 				}
 
+				var params = fn.params || [];
+
+				var patharray = [opts.root, name];
+				_.each(params, function (val) {
+					_.isString(val) && patharray.push(':' + val.replace(' ', '-'));
+				});
+
+				var path = patharray.join('/');
+
 				console.log(
 					'mapping route',
 					method.toUpperCase(),
-					[opts.root, name].join('/')
+					path
 					);
 
-				router([opts.root, name].join('/'), fn);
+				router(path, fn);
 			});
 		});
 	}
