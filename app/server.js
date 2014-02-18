@@ -4,6 +4,26 @@ var restify = require('restify'),
 	_ = require('underscore')
 	;
 
-var server = restify.createServer(_.defaults({
+var server = restify.createServer(
+	_.defaults(
+		{
+			// TODO
+		},
+		config.server
+	)
+);
 
-	}, config.server));
+console.log('server starting.');
+
+// makes the query string accessible via [request.query]
+server.use(restify.queryParser());
+
+// TODO pre middleware here
+
+require('./routes').registerRoutes(server);
+
+module.exports = {
+	init : function (port) {
+		server.listen(port);
+	}
+};
