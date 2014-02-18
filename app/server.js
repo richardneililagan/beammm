@@ -25,5 +25,6 @@ require('./routes').registerRoutes(server);
 module.exports = {
 	init : function (port) {
 		server.listen(port);
+		console.log('server listening at port', port);
 	}
 };
