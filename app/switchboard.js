@@ -23,12 +23,12 @@ module.exports = {
 
         _.each(contract, function (map, method) {
 
-            var router = _.bind(server[method.toLowerCase()], server);
-
             // failsafe
-            if (!_.isFunction(router)) {
+            if (!_.isFunction(server[method.toLowerCase()])) {
                 return;
             }
+
+            var router = _.bind(server[method.toLowerCase()], server);
 
             // append route maps to the server
             // based on this handler's contract
