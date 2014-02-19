@@ -1,13 +1,13 @@
 {
-	"server" : {
-		"certificate" : null,
-		"key" : null,
-		"name" : "beammm",
-		"formatters" : null,
-		"log" : null,
-		"spdy" : null,
-		"version" : null,
-		"responseTimeHeader" : null,
-		"responseTimeFormatter" : null
-	}
+    "server" : {
+        "certificate" : null,
+        "key" : null,
+        "name" : "beammm",
+        "formatters" : null,
+        "log" : null,
+        "spdy" : null,
+        "version" : null,
+        "responseTimeHeader" : null,
+        "responseTimeFormatter" : null
+    }
 }

@@ -1,26 +1,26 @@
 
 var _ = require('underscore'),
-	BaseController = require('./basecontroller').BaseController
-	;
+    BaseController = require('./basecontroller').BaseController
+    ;
 
 var Controller = function () {
 
-	this.methods = {
-		get : {
-			search : this.handler(function (req, res, next) {
+    this.methods = {
+        get : {
+            search : this.handler(function (req, res, next) {
 
+                res.send(req.params.searchstring);
+                next();
 
-				next();
-
-			}, ['searchstring'])
-		}
-	};
+            }, ['searchstring'])
+        }
+    };
 };
 
 require('util').inherits(Controller, BaseController);
 
 module.exports = {
-	create : function () {
-		return new Controller();
-	}
+    create : function () {
+        return new Controller();
+    }
 };
