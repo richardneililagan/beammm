@@ -6,10 +6,30 @@ var _ = require('underscore'),
 
 var Controller = function () {
 
-    var siteroot = 'http://thepiratebay.se';
+    var siteroot = 'http://thepiratebay.se',
+        torrentroot = 'http://torrents.thepiratebay.se'
+        ;
+
+    var getTorrentLink = function (id, name) {
+        return [
+            torrentroot,
+            id,
+            (_.isString(name) && !_.isEmpty(name) ?
+                name :
+                'xxxxxxxxxxxx'.replace(
+                    /[xy]/g,
+                    function(c) {var r = Math.random()*16|0,v=c=='x'?r:r&0x3|0x8;return v.toString(16);}
+                )
+            ) + '.torrent'
+        ].join('/');
+    };
 
     this.methods = {
+
         get : {
+
+            // performs a search for torrents against TPB.
+            // the result payload is sorted by the number of seeders, descending.
             search : this.handler(function (req, res, next) {
 
                 var loader = this.createLoader();
@@ -26,6 +46,8 @@ var Controller = function () {
 
                                 var $cells = $(record).find('td'),
                                     $infocell = $cells.eq(1),
+                                    url = $infocell.find('.detName a').attr('href'),
+                                    id = /\/(\d+)\//.exec(url)[1],
                                     seeders = $cells.eq(2).text(),
                                     leechers = $cells.eq(3).text(),
                                     meta = $infocell.find('.detDesc').text().split(', '),
@@ -37,7 +59,8 @@ var Controller = function () {
 
                                 return {
                                     title : $infocell.find('.detName a').text(),
-                                    url : $infocell.find('.detName a').attr('href'),
+                                    url : url,
+                                    torrent : getTorrentLink(id),
                                     seeders : seeders,
                                     leechers : leechers,
                                     uploaded : +new Date(rawdate),
