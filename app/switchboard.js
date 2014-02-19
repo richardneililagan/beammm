@@ -53,7 +53,7 @@ module.exports = {
 					path
 					);
 
-				router(path, fn);
+				router(path, _.bind(fn, handler));
 			});
 		});
 	}
