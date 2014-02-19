@@ -23,8 +23,8 @@ server.use(restify.queryParser());
 require('./routes').registerRoutes(server);
 
 module.exports = {
-    init : function (port) {
-        server.listen(port);
-        console.log('server listening at port', port);
+    init : function (port, ip) {
+        server.listen(port, ip);
+        console.log('server listening at port', port, '::', ip);
     }
 };
