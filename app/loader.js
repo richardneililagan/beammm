@@ -19,11 +19,18 @@ var Loader = function () {
 
     var loadByUrl = function (url, selector) {
 
+        // try to check for URI encoding
+        // TODO will probably have to make this better
+        url = decodeURI(url) !== url ? url : encodeURI(url);
+
+        console.log('starting page load ::', url);
+
         phantom.create(function (ph) {
             return ph.createPage(function (page) {
-                return page.open(url, function (status) {
-                    console.log('Opening [', url, '] :: ', status);
 
+                console.log('Opening [', url, ']');
+                return page.open(url, function (status) {
+                    console.log('... completed with status', status);
                     page.evaluate(
                         // parser
                         function () {
@@ -31,6 +38,12 @@ var Loader = function () {
                         },
                         // callback
                         function (result) {
+
+                            console.log(
+                                '... evaluate complete. Processing for callback with selector',
+                                selector
+                                );
+
                             var dom = cheerio.load(result);
                             if (!!selector && _.isString(selector)) {
                                 dom = dom(selector);
