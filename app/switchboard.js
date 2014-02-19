@@ -1,10 +1,10 @@
 var _ = require('underscore'),
-    BaseController = require('./handlers/basecontroller').BaseController
+    BaseController = require('./controllers/basecontroller').BaseController
     ;
 
 var parsefilename = function (alias, version) {
 
-    return './handlers/' + [
+    return './controllers/' + [
         alias,
         version.split('.').join('-')
     ].join('-');
