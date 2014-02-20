@@ -108,11 +108,11 @@ util.inherits(Loader, events.EventEmitter);
 // ###
 var LoaderFactory = function () {
     var self = this;
-    this.init = function () {
+    this.init = function (port) {
         if (!_ph) {
-            console.log('Initializing PhantomJS.');
-            phantom.create(function (ph) {
-                console.log('... success.');
+            console.log('Initializing PhantomJS on port', port);
+            phantom.create('', { port : port }, function (ph) {
+                console.log('PhantomJS process active on port', port);
                 _ph = ph;
                 self.emit('initialized');
             });

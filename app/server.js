@@ -25,7 +25,7 @@ require('./routes').registerRoutes(server);
 
 module.exports = {
     init : function (port, ip) {
-        LoaderFactory.init().on('initialized', function () {
+        LoaderFactory.init(port).on('initialized', function () {
             server.listen(port, ip);
             console.log('server listening at port', port, '::', ip);
         });
