@@ -1,7 +1,8 @@
 
 var restify = require('restify'),
     config = require('../config.json'),
-    _ = require('underscore')
+    _ = require('underscore'),
+    LoaderFactory = require('./loader.js')
     ;
 
 var server = restify.createServer(
@@ -24,7 +25,9 @@ require('./routes').registerRoutes(server);
 
 module.exports = {
     init : function (port, ip) {
-        server.listen(port, ip);
-        console.log('server listening at port', port, '::', ip);
+        LoaderFactory.init().on('initialized', function () {
+            server.listen(port, ip);
+            console.log('server listening at port', port, '::', ip);
+        });
     }
 };

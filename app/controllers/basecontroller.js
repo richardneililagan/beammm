@@ -48,6 +48,7 @@ _.extend(BaseController.prototype, {
 
     // convenience function to return an instance of the page loader
     createLoader : function () {
+        Loader.init();
         return Loader.create();
     },
 

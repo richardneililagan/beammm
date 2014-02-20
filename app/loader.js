@@ -10,6 +10,9 @@ var defaults = {
     selector : 'body'
 };
 
+// instance of the phantomjs browser
+var _ph = null;
+
 // @class encapsulates the primary functions of getting markup
 var Loader = function () {
 
@@ -24,35 +27,32 @@ var Loader = function () {
         url = decodeURI(url) !== url ? url : encodeURI(url);
 
         console.log('starting page load ::', url);
+        _ph.createPage(function (page) {
 
-        phantom.create(function (ph) {
-            return ph.createPage(function (page) {
+            console.log('Opening [', url, ']');
+            return page.open(url, function (status) {
+                console.log('... completed with status', status);
+                page.evaluate(
+                    // parser
+                    function () {
+                        return document.documentElement.outerHTML;
+                    },
+                    // callback
+                    function (result) {
 
-                console.log('Opening [', url, ']');
-                return page.open(url, function (status) {
-                    console.log('... completed with status', status);
-                    page.evaluate(
-                        // parser
-                        function () {
-                            return document.documentElement.outerHTML;
-                        },
-                        // callback
-                        function (result) {
+                        console.log(
+                            '... evaluate complete. Processing for callback with selector',
+                            selector
+                            );
 
-                            console.log(
-                                '... evaluate complete. Processing for callback with selector',
-                                selector
-                                );
+                        var dom = cheerio.load(result);
+                        if (!!selector && _.isString(selector)) {
+                            dom = dom(selector);
+                        }
 
-                            var dom = cheerio.load(result);
-                            if (!!selector && _.isString(selector)) {
-                                dom = dom(selector);
-                            }
-
-                            self.emit('loaded', dom);
-                            ph.exit();
-                        });
-                });
+                        self.emit('loaded', dom);
+                        page.close();
+                    });
             });
         });
 
@@ -104,8 +104,32 @@ var Loader = function () {
 
 util.inherits(Loader, events.EventEmitter);
 
-module.exports = {
-    create : function () {
+//
+// ###
+var LoaderFactory = function () {
+    var self = this;
+    this.init = function () {
+        if (!_ph) {
+            console.log('Initializing PhantomJS.');
+            phantom.create(function (ph) {
+                console.log('... success.');
+                _ph = ph;
+                self.emit('initialized');
+            });
+        }
+        else {
+            console.log('INFO : Phantom already active.');
+        }
+
+        return this;
+    };
+
+    this.create = function () {
         return new Loader();
-    }
+    };
 };
+
+util.inherits(LoaderFactory, events.EventEmitter);
+
+//
+module.exports = new LoaderFactory();
