@@ -32,7 +32,10 @@ var Loader = function () {
 
             // TODO error handling
             var dom = cheerio.load(body);
+            console.log('dom initialized', dom);
+
             if (!!selector && _.isString(selector)) {
+                console.log('using selector', selector);
                 dom = dom(selector);
             }
 
