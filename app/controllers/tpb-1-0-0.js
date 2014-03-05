@@ -45,7 +45,7 @@ var Controller = function () {
                         var records = dom.toArray(),
                             results = _.map(records, function (record) {
 
-                                console.log('torrent id found :', (/\/(\d+)\//.exec(url)[1]);
+                                console.log('torrent id found :', (/\/(\d+)\//.exec(url)[1]));
 
                                 var $cells = $(record).find('td'),
                                     $infocell = $cells.eq(1),
