@@ -31,12 +31,5 @@ module.exports = {
                 console.log('LoaderFactory initialized.');
             });
         });
-        /*
-        LoaderFactory.init(port).on('initialized', function () {
-            server.listen(port, function () {
-                console.log('server listening at port', port);
-            });
-        });
-*/
     }
 };

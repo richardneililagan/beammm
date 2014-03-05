@@ -1,7 +1,7 @@
 
 var util = require('util'),
     _ = require('underscore'),
-    Loader = require('../loader')
+    Loader = require('../loader-clean')
     ;
 
 var BaseController = function () {};
