@@ -29,7 +29,6 @@ var Loader = function () {
         }, function (err, res, body) {
 
             if (err) { console.log(err); }
-            console.log(body);
 
             // TODO error handling
             var dom = cheerio.load(body);

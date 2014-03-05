@@ -72,6 +72,8 @@ var Controller = function () {
                                 };
                             });
 
+                        console.log(results);
+
                         res.send(results);
                         next();
                     });
