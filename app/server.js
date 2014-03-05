@@ -24,8 +24,8 @@ server.use(restify.queryParser());
 require('./routes').registerRoutes(server);
 
 module.exports = {
-    init : function (port) {
-        server.listen(port, function () {
+    init : function (port, ip) {
+        server.listen(port, ip, function () {
             console.log('server listening at port', port);
             LoaderFactory.init(port).on('initialized', function () {
                 console.log('LoaderFactory initialized.');
