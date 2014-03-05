@@ -30,13 +30,16 @@ var Loader = function () {
 
             if (err) { console.log(err); }
 
+            console.log(body);
+
             // TODO error handling
-            var dom = cheerio.load(body);
-            console.log('dom initialized', dom);
+            var dom = cheerio.load(body)('body');
+            console.log('dom initialized', dom.html());
 
             if (!!selector && _.isString(selector)) {
                 console.log('using selector', selector);
-                dom = dom(selector);
+                dom = dom.find(selector);
+                console.log('reduced to', dom.html());
             }
 
             self.emit('loaded', dom);
