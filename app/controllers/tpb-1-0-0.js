@@ -45,12 +45,13 @@ var Controller = function () {
                         var records = dom.toArray(),
                             results = _.map(records, function (record) {
 
-                                console.log('torrent id found :', (/\/(\d+)\//.exec(url)[1]));
-
                                 var $cells = $(record).find('td'),
                                     $infocell = $cells.eq(1),
-                                    url = $infocell.find('div.detName a').attr('href'),
-                                    id = /\/(\d+)\//.exec(url)[1],
+                                    url = $infocell.find('div.detName a').attr('href');
+
+                                console.log('url is', url);
+
+                                var id = /\/(\d+)\//.exec(url)[1],
                                     seeders = $cells.eq(2).text(),
                                     leechers = $cells.eq(3).text(),
                                     meta = $infocell.find('font.detDesc').text().split(', '),

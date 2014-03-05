@@ -30,8 +30,6 @@ var Loader = function () {
 
             if (err) { console.log(err); }
 
-            console.log(body);
-
             // TODO error handling
             var dom = cheerio.load(body)('body');
 
