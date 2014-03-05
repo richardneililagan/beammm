@@ -39,7 +39,7 @@ var Controller = function () {
 
                 console.log('URL resolved to', url);
                 loader
-                    .load(url, '#searchResult tbody tr')
+                    .load(url, '#searchResult tr')
                     .on('loaded', function (dom) {
 
                         var records = dom.toArray(),
