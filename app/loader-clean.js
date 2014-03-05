@@ -1,5 +1,5 @@
 
-var phantom = require('phantom'),
+var request = require('request'),
     util = require('util'),
     events = require('events'),
     cheerio = require('cheerio'),
@@ -9,9 +9,6 @@ var phantom = require('phantom'),
 var defaults = {
     selector : 'body'
 };
-
-// instance of the phantomjs browser
-var _ph = null;
 
 // @class encapsulates the primary functions of getting markup
 var Loader = function () {
@@ -27,33 +24,14 @@ var Loader = function () {
         url = decodeURI(url) !== url ? url : encodeURI(url);
 
         console.log('starting page load ::', url);
-        _ph.createPage(function (page) {
+        request(url, function (err, res, body) {
+            // TODO error handling
+            var dom = cheerio.load(body);
+            if (!!selector && _.isString(selector)) {
+                dom = dom(selector);
+            }
 
-            console.log('Opening [', url, ']');
-            return page.open(url, function (status) {
-                console.log('... completed with status', status);
-                page.evaluate(
-                    // parser
-                    function () {
-                        return document.documentElement.outerHTML;
-                    },
-                    // callback
-                    function (result) {
-
-                        console.log(
-                            '... evaluate complete. Processing for callback with selector',
-                            selector
-                            );
-
-                        var dom = cheerio.load(result);
-                        if (!!selector && _.isString(selector)) {
-                            dom = dom(selector);
-                        }
-
-                        self.emit('loaded', dom);
-                        page.close();
-                    });
-            });
+            self.emit('loaded', dom);
         });
 
         return self;
@@ -102,25 +80,14 @@ var Loader = function () {
     };
 };
 
-util.inherits(Loader, events.EventEmitter);
-
 //
 // ###
 var LoaderFactory = function () {
     var self = this;
     this.init = function (port) {
-        if (!_ph) {
-            console.log('Initializing PhantomJS on port', port);
-            phantom.create('', function (ph) {
-                console.log('PhantomJS process active on port', port);
-                _ph = ph;
-                self.emit('initialized');
-            });
-        }
-        else {
-            console.log('INFO : Phantom already active.');
-        }
-
+        // nothing to initialize really
+        self.emit('initialized');
+        console.log('Using clean loader.');
         return this;
     };
 
@@ -130,6 +97,7 @@ var LoaderFactory = function () {
 };
 
 util.inherits(LoaderFactory, events.EventEmitter);
+util.inherits(Loader, events.EventEmitter);
 
 //
 module.exports = new LoaderFactory();

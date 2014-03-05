@@ -2,7 +2,7 @@
 var restify = require('restify'),
     config = require('../config.json'),
     _ = require('underscore'),
-    LoaderFactory = require('./loader.js')
+    LoaderFactory = require('./loader-clean.js')
     ;
 
 var server = restify.createServer(
@@ -24,10 +24,19 @@ server.use(restify.queryParser());
 require('./routes').registerRoutes(server);
 
 module.exports = {
-    init : function (port, ip) {
-        LoaderFactory.init(port).on('initialized', function () {
-            server.listen(port, ip);
-            console.log('server listening at port', port, '::', ip);
+    init : function (port) {
+        server.listen(port, function () {
+            console.log('server listening at port', port);
+            LoaderFactory.init(port).on('initialized', function () {
+                console.log('LoaderFactory initialized.');
+            });
         });
+        /*
+        LoaderFactory.init(port).on('initialized', function () {
+            server.listen(port, function () {
+                console.log('server listening at port', port);
+            });
+        });
+*/
     }
 };
