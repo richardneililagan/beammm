@@ -24,7 +24,13 @@ var Loader = function () {
         url = decodeURI(url) !== url ? url : encodeURI(url);
 
         console.log('starting page load ::', url);
-        request(url, function (err, res, body) {
+        request({
+            url : url,
+        }, function (err, res, body) {
+
+            if (err) { console.log(err); }
+            console.log(body);
+
             // TODO error handling
             var dom = cheerio.load(body);
             if (!!selector && _.isString(selector)) {

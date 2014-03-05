@@ -32,13 +32,14 @@ var Controller = function () {
             // the result payload is sorted by the number of seeders, descending.
             search : this.handler(function (req, res, next) {
 
-                var loader = this.createLoader();
+                var loader = this.createLoader(),
+                    // ~/0/7/0 to sort by seeders
+                    url = [siteroot, 'search', req.params.searchstring, 0, 7, 0].join('/')
+                    ;
+
+                console.log('URL resolved to', url);
                 loader
-                    .load(
-                        // ~/0/7/0 to sort by seeders
-                        [siteroot, 'search', req.params.searchstring, 0, 7, 0].join('/'),
-                        '#searchResult tbody tr'
-                        )
+                    .load(url, '#searchResult tbody tr')
                     .on('loaded', function (dom) {
 
                         var records = dom.toArray(),
